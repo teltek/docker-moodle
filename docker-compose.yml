@@ -6,6 +6,11 @@ services:
       - .env
     volumes:
       - /data/moodle-mysql:/var/lib/mysql
+    dns:
+      - 172.17.0.1
+    networks:
+      app_net:
+
   moodle:
     build: moodle
     links:
@@ -17,3 +22,16 @@ services:
       - "443:443"
     volumes:
       - /data/letsencrypt:/etc/letsencrypt
+    dns:
+      - 172.17.0.1
+    networks:
+      app_net:
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 172.17.0.0/24
